@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2018.1.1 (Build 311U)" ts="2019-11-26 18:33:27">
+<Document name="CubeEvents-RecentCubeEvents.dashboard.DFI">
+<dashboard xmlns="http://www.intersystems.com/deepsee/library" name="RecentCubeEvents" folderName="CubeEvents" title="Recent Cube Events" description="" keywords="" owner="" shared="true" public="true" locked="false" resource="" timeCreated="2019-09-12T22:29:07.513Z" createdBy="sam" category="" bookCover="" scheme="" worklistCount="0" snapTo="true" snapGrid="true" gridRows="10" gridCols="10" canResize="true" canModify="true" showTitleBar="true" titleBarOpacity="" titleBarColor="" selectedTitleBarOpacity="" selectedTitleBarColor="" titleBarTextColor="" selectedTitleBarTextColor="" titleBarFont="" companyName="" companyLogo="" companyStyle="" backgroundColor="white" backgroundImage="none" backgroundRepeat="no-repeat" backgroundSize="100% 100%" backgroundOpacity="1" widgetBorders="1px solid #F0F0F0" widgetBordersSwitch="edit" widgetBordersColor="#F0F0F0" widgetBordersStyle="solid" widgetBordersWidth="1" widgetBordersToggle="true">
+  <widget name="LatestBuildEvents" type="scoreCardWidget" subtype="regular" subtypeClass="" title="Latest Build Events" dataSource="CubeEvents/LatestEventsByCube.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="2" homeColL="0" colSpanL="5" rowSpanL="8" showToolbar="true" showToolbarBottomBorder="true" showToolbarOnlyWhenMaximized="false" colorToolbar="#F0F0F0" opacityToolbar="1" backgroundColor="#F0F0F0" opacity="1" theme="" dataColorList="">
+    <property name="analyzer">0</property>
+    <property name="print">1</property>
+    <override name="scoreCard">{width:2166,columns:[{display:'label',label:'Cube',_type:'scoreCardColumn'},{dataValue:'Build/LatestEventStartTime',label:'Latest Build StartTime',_type:'scoreCardColumn'},{dataValue:'Build/LatestEventErrorCount',label:'Latest ErrorCount',_type:'scoreCardColumn'}],pivotData:true,selectedIndex:5,_type:'scoreCard'}</override>
+  </widget>
+  <widget name="LatestSynchEvents" type="scoreCardWidget" subtype="regular" subtypeClass="" title="Latest Synch Events" dataSource="CubeEvents/LatestEventsByCube.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="2" homeColL="5" colSpanL="5" rowSpanL="8" showToolbar="true" showToolbarBottomBorder="true" showToolbarOnlyWhenMaximized="false" colorToolbar="#F0F0F0" opacityToolbar="1" backgroundColor="#F0F0F0" opacity="1" theme="" dataColorList="">
+    <property name="analyzer">0</property>
+    <property name="print">1</property>
+    <override name="scoreCard">{width:1079,columns:[{display:'label',label:'Cube',_type:'scoreCardColumn'},{dataValue:'Synch/LatestEventStartTime',label:'Latest Synch StartTime',_type:'scoreCardColumn'},{dataValue:'Synch/LatestEventErrorCount',display:'value',label:'Latest ErrorCount',_type:'scoreCardColumn'}],pivotData:true,_type:'scoreCard'}</override>
+  </widget>
+  <widget name="LastDataUpdate" type="meter" subtype="textMeter" subtypeClass="" title="" dataSource="CubeManagerKPI.kpi" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="7" colSpanL="3" rowSpanL="2" showToolbar="true" showToolbarBottomBorder="true" showToolbarOnlyWhenMaximized="false" colorToolbar="#F0F0F0" opacityToolbar="1" backgroundColor="#F0F0F0" opacity="1" theme="" dataColorList="">
+    <dataProperty name="" label="Last Data Update" width="" align="" subtype="textMeter" style="" display="value" format="" showAs="value" valueColumn="false" summary="" summaryValue="" dataValue="LastDataUpdate" targetValue="" thresholdLower="" thresholdUpper="" rangeLower="" rangeUpper="" baseValue="" override="{height:149,width:597,dataBinding:&apos;LastDataUpdate&apos;,value:&apos;2019-11-25 19:15:00&apos;,normalStyle:&apos;fill:#404040;font-size:6px;&apos;,_type:&apos;textMeter&apos;}"></dataProperty>
+  </widget>
+  <widget name="Controls" type="controlPanel" subtype="verticalControls" subtypeClass="" title="" dataSource="CubeEvents/CubeEventStatusByDate.pivot" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="0" colSpanL="4" rowSpanL="2" showToolbar="true" showToolbarBottomBorder="true" showToolbarOnlyWhenMaximized="false" colorToolbar="#F0F0F0" opacityToolbar="1" backgroundColor="#F0F0F0" opacity="1" theme="" dataColorList="">
+    <control name="" action="viewDashboard" target="*" targetProperty="CubeEvents/RecentCubeEventErrors.dashboard" location="widget" type="auto" controlClass="" label="View Recent Cube Event Errors" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen="">
+      <valueRequired>false</valueRequired>
+    </control>
+    <control name="" action="viewDashboard" target="" targetProperty="BuildErrors/BuildErrorsDashboard.dashboard" location="widget" type="auto" controlClass="" label="View Build Error Dashboard" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen="">
+      <valueRequired>false</valueRequired>
+    </control>
+    <control name="" action="viewDashboard" target="" targetProperty="CubeEvents/CubeManagerDashboard.dashboard" location="widget" type="auto" controlClass="" label="View Cube Manager Dashboard" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen="">
+      <valueRequired>false</valueRequired>
+    </control>
+    <control name="" action="applyFilter" target="*" targetProperty="[CubeName].[H1].[CubeName]" location="widget" type="auto" controlClass="" label="CubeName" title="" value="" text="" readOnly="false" valueList="" displayList="" activeWhen="">
+      <valueRequired>false</valueRequired>
+    </control>
+  </widget>
+  <widget name="RecentErrorStatus" type="meter" subtype="textMeter" subtypeClass="" title="" dataSource="CubeManagerKPI.kpi" dataLink="" drillDownDataSource="" width="200" height="200" sidebarContent="" showSidebar="false" sidebarWidth="" maximized="false" homeRowL="0" homeColL="4" colSpanL="3" rowSpanL="2" showToolbar="true" showToolbarBottomBorder="true" showToolbarOnlyWhenMaximized="false" colorToolbar="#F0F0F0" opacityToolbar="1" backgroundColor="#F0F0F0" opacity="1" theme="" dataColorList="">
+    <dataProperty name="" label="Recent Cube Event Errors" width="" align="" subtype="textMeter" style="" display="value" format="" showAs="value" valueColumn="false" summary="" summaryValue="" dataValue="ErrorStatusMessage" targetValue="" thresholdLower="" thresholdUpper="" rangeLower="" rangeUpper="" baseValue="" override="{height:111,width:444,dataBinding:&apos;ErrorStatusMessage&apos;,labelStyle:&apos;font-size:7px;&apos;,value:&apos;Click &quot;View Recent Cube Event Errors&quot; for details&apos;,normalStyle:&apos;fill:#404040;font-size:4px;&apos;,_type:&apos;textMeter&apos;}"></dataProperty>
+  </widget>
+</dashboard>
+</Document></Export>
