@@ -1,4 +1,4 @@
-Class DSII.CubeEventLogUtils Extends %RegisteredObject
+Class CubeEventMonitor.CubeEventLogUtils Extends %RegisteredObject
 {
 
 ClassMethod WriteLogFile() As %Status
@@ -102,7 +102,7 @@ ClassMethod WriteLogFile() As %Status
 ClassMethod WriteRecentErrors() As %Status
 {
 	set lastweek = $zdt(((+$h)-7)_",0",3)
-	set fieldList = "ID, CubeKey AS ""CubeName"", StartTime, FinishTime, CubeEvent, DSII.CubeEventLogUtils_getEventStatusText(EventStatus) AS ""CubeEventStatus"", CubeSize AS ""FactCount"", ErrorCount, TotalTime, FactsUpdated, MissingRefs, ExprTime, MgmtGroup AS ""RegistryGroup"", AsynchUpdate, AgentCount"
+	set fieldList = "ID, CubeKey AS ""CubeName"", StartTime, FinishTime, CubeEvent, CubeEventMonitor.CubeEventLogUtils_getEventStatusText(EventStatus) AS ""CubeEventStatus"", CubeSize AS ""FactCount"", ErrorCount, TotalTime, FactsUpdated, MissingRefs, ExprTime, MgmtGroup AS ""RegistryGroup"", AsynchUpdate, AgentCount"
 	set cubeQuery = "SELECT "_fieldList_" FROM %DeepSee_CubeManager.CubeEvent WHERE EventStatus %STARTSWITH '0' AND FinishTime >= '"_lastweek_"' ORDER BY FinishTime DESC"
 	set statement = ##class(%SQL.Statement).%New()
 	set sc = statement.%Prepare(cubeQuery)

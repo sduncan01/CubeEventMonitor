@@ -1,11 +1,11 @@
 /// 
-Class DSII.CubeEventCube Extends %DeepSee.CubeDefinition [ DependsOn = (%DeepSee.CubeManager.CubeEvent, DSII.CubeManagerActionKPI) ]
+Class CubeEventMonitor.CubeEventCube Extends %DeepSee.CubeDefinition [ DependsOn = (%DeepSee.CubeManager.CubeEvent, CubeEventMonitor.CubeManagerActionKPI) ]
 {
 
 /// Cube definition from Architect.
 XData Cube [ XMLNamespace = "http://www.intersystems.com/deepsee" ]
 {
-<cube xmlns="http://www.intersystems.com/deepsee" name="CubeEvents" displayName="Cube Events" disabled="false" abstract="false" sourceClass="%DeepSee.CubeManager.CubeEvent" actionClass="DSII.CubeManagerActionKPI" resource="%DeepSee_Admin" countMeasureName="%COUNT" bucketSize="8" bitmapChunkInMemory="false" precompute="0" disableListingGroups="false">
+<cube xmlns="http://www.intersystems.com/deepsee" name="CubeEvents" displayName="Cube Events" disabled="false" abstract="false" sourceClass="%DeepSee.CubeManager.CubeEvent" actionClass="CubeEventMonitor.CubeManagerActionKPI" resource="%DeepSee_Admin" countMeasureName="%COUNT" bucketSize="8" bitmapChunkInMemory="false" precompute="0" disableListingGroups="false">
   <dimension name="CubeEvent" disabled="false" hasAll="false" allCaption="All CubeEvent" allDisplayName="CubeEvent" type="data" hidden="false" showHierarchies="default">
     <hierarchy name="H1" disabled="false" hidden="false">
       <level name="CubeEvent" disabled="false" sourceProperty="CubeEvent" list="false" useDisplayValue="true" useAsFilter="true" hidden="false">
@@ -158,7 +158,7 @@ XData Cube [ XMLNamespace = "http://www.intersystems.com/deepsee" ]
 /// from the Cube Registry interface in the Management Portal after running this method.
 ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true", updateInterval As %Integer = 60, folderItemResource As %String = "%DeepSee_Admin", alertRecipient As %String = "") As %Status
 {
-	do $System.OBJ.Compile("DSII.BuildErrors,DSII.BuildErrorActionKPI,DSII.BuildErrorsCube,DSII.CubeManagerActionKPI,DSII.CubeEventCube,DSII.CubeEventLogUtils,DSII.RecentErrorsPortlet",compileFlags)
+	do $System.OBJ.Compile("CubeEventMonitor.BuildErrors,CubeEventMonitor.BuildErrorActionKPI,CubeEventMonitor.BuildErrorsCube,CubeEventMonitor.CubeManagerActionKPI,CubeEventMonitor.CubeEventCube,CubeEventMonitor.CubeEventLogUtils,CubeEventMonitor.RecentErrorsPortlet",compileFlags)
 	
 	// add resources to folders containing pivots and dashboards
 	set buildErrorsFolder = ##class(%DeepSee.UserLibrary.Utils).%FindFolder("BuildErrors",0,.sc)
@@ -226,7 +226,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 	set eventCube.CustomBuildOrder = 1
 	set eventCube.DependentCubes = ""
 	set eventCube.Disabled = 0
-	set eventCube.PostBuildCode = "do ##class(DSII.CubeEventCube).PostBuild()"
+	set eventCube.PostBuildCode = "do ##class(CubeEventMonitor.CubeEventCube).PostBuild()"
 	set eventCube.UpdatePlan = "Build"
 	
 	set errorGroup = map.Groups.GetAt(errorGroupIndex)	
@@ -264,7 +264,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 		write !,"Building the CubeEvents cube",!
 		set sc = eventCube.Repair(map)
 		return:(sc '= 1) sc
-		set sc = ##class(DSII.CubeEventCube).PostBuild()
+		set sc = ##class(CubeEventMonitor.CubeEventCube).PostBuild()
 		return:(sc '= 1) sc
 		write !, "Building the BuildErrors cube",!
 		set sc = errorCube.Repair(map)
@@ -274,7 +274,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 	}
 	
 	// set up a runtime variable for use in the CubeManagerDashboard
-	set ^DeepSee.User.Settings("FirstCube","value") = "##class(DSII.CubeEventLogUtils).GetDefaultCube()"
+	set ^DeepSee.User.Settings("FirstCube","value") = "##class(CubeEventMonitor.CubeEventLogUtils).GetDefaultCube()"
 	set ^DeepSee.User.Settings("FirstCube","context") = "DefaultFilterValue"
 	set ^DeepSee.User.Settings("FirstCube","comment") = ""
 	
@@ -302,7 +302,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 	set task.Name = "UpdateCubeEvents - "_$$$UPPER($namespace)
 	set task.NameSpace = $namespace
 	set task.MirrorStatus = 3
-	set task.TaskClass = "DSII.UpdateCubeEvents"
+	set task.TaskClass = "CubeEventMonitor.UpdateCubeEvents"
 	set task.RunAsUser = "_SYSTEM"
 	set task.DailyFrequency = 1
 	set task.DailyFrequencyTime = 0
@@ -324,7 +324,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 	// set up a task to send email alerts, if an email address has been provided
 	if (alertRecipient '= "") {
 		kill task
-		set ^DSII.CubeAlertRecipient = alertRecipient
+		set ^CubeEventMonitor.AlertRecip = alertRecipient
 		set alertTaskID = ##class(%SYS.Task).FindId("Cube Monitor Alerts - "_$$$UPPER($namespace))
 		if (alertTaskID = "") {
 			set task = ##class(%SYS.Task).%New()
@@ -342,7 +342,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 		set task.Name = "Cube Monitor Alerts - "_$$$UPPER($namespace)
 		set task.NameSpace = $namespace
 		set task.MirrorStatus = 3
-		set task.TaskClass = "DSII.CubeMonitorAlerts"
+		set task.TaskClass = "CubeEventMonitor.CubeMonitorAlerts"
 		set task.RunAsUser = "_SYSTEM"
 		set task.DailyFrequency = 0 // send alerts once per day...
 		set task.DailyStartTime = 21600 // ...at 6 am
@@ -373,18 +373,18 @@ ClassMethod UpdateCubeEvents(newTimestamp As %TimeStamp) As %Integer
 {
 	// check whether CUBEEVENTS has ever been built from the Cube Manager, and if it has, find the last time it was updated (by a build or by this method)
 
-	if ('($d(^DSII.LastCubeEventsUpdate))) {
-		set ^DSII.UpdateCubeEventsError(newTimestamp) = "The CubeEvents cube must be built from the Cube Manager before UpdateCubeEvents() can be run."
+	if ('($d(^CubeEventMonitor.LastCEUpdate))) {
+		set ^CubeEventMonitor.UpdateCEError(newTimestamp) = "The CubeEvents cube must be built from the Cube Manager before UpdateCubeEvents() can be run."
 		return -1
 	}
-	set lastTimestamp = ^DSII.LastCubeEventsUpdate
+	set lastTimestamp = ^CubeEventMonitor.LastCEUpdate
 	
 	// get IDs for cube events that have started or finished since the last time CUBEEVENTS was updated
 	set query = "SELECT ID FROM %DeepSee_CubeManager.CubeEvent WHERE StartTime >= '"_lastTimestamp_"' UNION SELECT ID FROM %DeepSee_CubeManager.CubeEvent WHERE FinishTime >= '"_lastTimestamp_"'"
 	set statement = ##class(%SQL.Statement).%New()
 	set sc = statement.%Prepare(query)
 	if (sc'=1) {
-		set ^DSII.UpdateCubeEventsError(newTimestamp) = sc
+		set ^CubeEventMonitor.UpdateCEError(newTimestamp) = sc
 		return -1
 	}
 	set rs = statement.%Execute()
@@ -396,11 +396,11 @@ ClassMethod UpdateCubeEvents(newTimestamp As %TimeStamp) As %Integer
 		set sc = ##class(%DeepSee.Utils).%ProcessFact("CUBEEVENTS",rs.ID,,.missingrefs)
 		if (missingrefs > 0) {
 			// this should not happen given the current CUBEEVENTS model, which has no relationships
-			set ^DSII.UpdateCubeEventsError(newTimestamp,rs.ID) = sc
-			set ^DSII.UpdateCubeEventsError(newTimestamp,rs.ID,"MissingRef") = missingrefs
+			set ^CubeEventMonitor.UpdateCEError(newTimestamp,rs.ID) = sc
+			set ^CubeEventMonitor.UpdateCEError(newTimestamp,rs.ID,"MissingRef") = missingrefs
 		}
 		elseif (sc '= 1) {
-			set ^DSII.UpdateCubeEventsError(newTimestamp,rs.ID) = sc
+			set ^CubeEventMonitor.UpdateCEError(newTimestamp,rs.ID) = sc
 		}
 		else {
 			// count facts that are successfully processed
@@ -409,7 +409,7 @@ ClassMethod UpdateCubeEvents(newTimestamp As %TimeStamp) As %Integer
 	}
 	
 	// set LastCubeEventsUpdate global node to the start time of this update
-	set ^DSII.LastCubeEventsUpdate = newTimestamp
+	set ^CubeEventMonitor.LastCEUpdate = newTimestamp
 	return updatedCount
 }
 
@@ -426,7 +426,7 @@ ClassMethod PostBuild() As %Status
 	
 	// set the LastCubeEventsUpdate global node to the above start time, so that UpdateCubeEvents can begin from that timestamp
 	if (rs.%Next()) {
-		set ^DSII.LastCubeEventsUpdate = rs.StartTime
+		set ^CubeEventMonitor.LastCEUpdate = rs.StartTime
 	}
 	return $$$OK
 }

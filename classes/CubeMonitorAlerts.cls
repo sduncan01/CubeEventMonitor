@@ -1,5 +1,5 @@
 /// Cube Monitor Alerts task - adapted from Peter Steiwer's Data Driven Alerts project, available under the MIT License at https://github.com/psteiwer/DataDrivenAlerts
-Class DSII.CubeMonitorAlerts Extends %SYS.Task.Definition
+Class CubeEventMonitor.CubeMonitorAlerts Extends %SYS.Task.Definition
 {
 
 Parameter TaskName = "Cube Monitor Alerts";
@@ -31,11 +31,11 @@ Method OnTask() As %Status
 ClassMethod RunAlert(alertName As %String, startTime As %DateTime) As %Status
 {
 	// search for errors since the last alert, or in the last week if no LastAlertTime is logged
-	set lastAlertTime = $g(^DSII.LastAlertTime(alertName),$zdt(((+$h)-7)_",0",3))
+	set lastAlertTime = $g(^CubeEventMonitor.LastAlertTime(alertName),$zdt(((+$h)-7)_",0",3))
 	
 	set alertQuery = $case(alertName,
 							"CubeEventErrors":"SELECT COUNT(*) FROM %DeepSee_CubeManager.CubeEvent WHERE EventStatus %STARTSWITH '0' AND (FinishTime >= '"_lastAlertTime_"' OR (FinishTime IS NULL AND StartTime >= '"_lastAlertTime_"'))",
-							"BuildErrors":"SELECT COUNT(*) FROM (SELECT TOP 1 ID FROM DSII.BuildErrors)", // just see if there are any build errors, we can count them more efficiently later
+							"BuildErrors":"SELECT COUNT(*) FROM (SELECT TOP 1 ID FROM CubeEventMonitor.BuildErrors)", // just see if there are any build errors, we can count them more efficiently later
 							:"Invalid alert")
 	if (alertQuery = "Invalid alert") {
 		throw ##class(%Exception.General).%New("Invalid alert name "_alertName)
@@ -58,8 +58,8 @@ ClassMethod RunAlert(alertName As %String, startTime As %DateTime) As %Status
 		set sc = ..SendAlert(alertName,alertCount)
 	}
 		
-	set sc = ##class(DSII.CubeMonitorAlertLog).LogTask(alertName,alertCount,(alertCount > 0),sc,alertQuery)
-	set ^DSII.LastAlertTime(alertName) = startTime
+	set sc = ##class(CubeEventMonitor.CubeMonitorAlertLog).LogTask(alertName,alertCount,(alertCount > 0),sc,alertQuery)
+	set ^CubeEventMonitor.LastAlertTime(alertName) = startTime
 
 	quit sc
 }
@@ -70,7 +70,7 @@ ClassMethod SendAlert(alertName As %String, pValue As %Numeric) As %Status
 	Set tSC=$$$OK
 	try {
 		Set tMail=##class(%Net.MailMessage).%New()
-		Do tMail.To.Insert($g(^DSII.CubeAlertRecipient,""))
+		Do tMail.To.Insert($g(^CubeEventMonitor.AlertRecip,""))
 	 	Set tMail.From="CubeMonitorAlerts@intersystems.com"
 	 	Set tSMTP=##class(%Net.SMTP).%New()
 	 	set tSMTP.port = ##class(%SYS.Task.Config).GetData("Port")

@@ -1,15 +1,15 @@
 /// 
-Class DSII.BuildErrorsCube Extends %DeepSee.CubeDefinition [ DependsOn = (DSII.BuildErrors, DSII.BuildErrorActionKPI), ProcedureBlock ]
+Class CubeEventMonitor.BuildErrorsCube Extends %DeepSee.CubeDefinition [ DependsOn = (CubeEventMonitor.BuildErrors, CubeEventMonitor.BuildErrorActionKPI), ProcedureBlock ]
 {
 
 /// Cube definition from Architect.
 XData Cube [ XMLNamespace = "http://www.intersystems.com/deepsee" ]
 {
-<cube xmlns="http://www.intersystems.com/deepsee" name="BuildErrorsCube" displayName="BuildErrorsCube" disabled="false" abstract="false" sourceClass="DSII.BuildErrors" actionClass="DSII.BuildErrorActionKPI" resource="%DeepSee_Admin" countMeasureName="%COUNT" bucketSize="8" bitmapChunkInMemory="false" precompute="0" disableListingGroups="false">
+<cube xmlns="http://www.intersystems.com/deepsee" name="BuildErrorsCube" displayName="BuildErrorsCube" disabled="false" abstract="false" sourceClass="CubeEventMonitor.BuildErrors" actionClass="CubeEventMonitor.BuildErrorActionKPI" resource="%DeepSee_Admin" countMeasureName="%COUNT" bucketSize="8" bitmapChunkInMemory="false" precompute="0" disableListingGroups="false">
   <dimension name="CubeName" disabled="false" hasAll="false" allCaption="All CubeName" allDisplayName="CubeName" type="data" hidden="false" showHierarchies="default">
     <hierarchy name="H1" disabled="false" hidden="false">
       <level name="CubeName" disabled="false" sourceProperty="CubeName" list="false" useDisplayValue="true" useAsFilter="true" hidden="false">
-        <property name="BuildOrder" disabled="false" sourceExpression="$lg(^DSII.RegistryMapLookup(&quot;cubes&quot;,%source.CubeName),1)_&quot;.&quot;_$lg(^DSII.RegistryMapLookup(&quot;cubes&quot;,%source.CubeName),2)" hidden="false" sort="asc numeric" isName="false" isDescription="false" isReference="false" useDisplayValue="false">
+        <property name="BuildOrder" disabled="false" sourceExpression="$lg(^CubeEventMonitor.RegMapLookup(&quot;cubes&quot;,%source.CubeName),1)_&quot;.&quot;_$lg(^CubeEventMonitor.RegMapLookup(&quot;cubes&quot;,%source.CubeName),2)" hidden="false" sort="asc numeric" isName="false" isDescription="false" isReference="false" useDisplayValue="false">
         </property>
       </level>
     </hierarchy>
@@ -59,16 +59,16 @@ ClassMethod GetInfo(CubeName As %String, ID As %String) As %List
 /// Notification that this cube is about to be built.<br/>
 ClassMethod %OnBuildCube() As %Status
 {
-	set ^DSII.BuildErrorsCubeRebuildTime = $zdt($h)
+	set ^CubeEventMonitor.BERebuildTime = $zdt($h)
 	
-	kill ^DSII.RegistryMapLookup
+	kill ^CubeEventMonitor.RegMapLookup
 	set map = ##class(%DeepSee.CubeManager.Utils).BuildRegistryMap(.sc,,,.lookup)
-	merge ^DSII.RegistryMapLookup = lookup
+	merge ^CubeEventMonitor.RegMapLookup = lookup
 	
 	quit sc
 }
 
-/// wrapper for %DeepSee.Utils:%FixBuildErrors(), called by FixBuildErrors custom action in DSII.BuildErrorActionKPI:%OnDashboardAction()
+/// wrapper for %DeepSee.Utils:%FixBuildErrors(), called by FixBuildErrors custom action in CubeEventMonitor.BuildErrorActionKPI:%OnDashboardAction()
 ClassMethod FixBuildErrors(cubeName As %String, verbose As %Boolean)
 {
 	set startTime = $zdt($h,3)
@@ -98,7 +98,7 @@ ClassMethod FixBuildErrors(cubeName As %String, verbose As %Boolean)
 ClassMethod %OnAfterBuildCube(pBuildStatus As %Status, pBuildErrors As %Boolean = 0) As %Status
 {
 	set end = $h
-	set start = $zdth(^DSII.BuildErrorsCubeRebuildTime)
+	set start = $zdth(^CubeEventMonitor.BERebuildTime)
 	set elapsed = 0
 	
 	if ($p(end,",",1) = $p(start,",",1)) {
@@ -116,7 +116,7 @@ ClassMethod %OnAfterBuildCube(pBuildStatus As %Status, pBuildErrors As %Boolean 
 	if (minutes < 10) set minutes = "0"_minutes
 	if (seconds < 10) set seconds = "0"_seconds
 	set timeDisplay = hours_":"_minutes_":"_seconds
-	set ^DSII.BuildErrorsCubeElapsed = timeDisplay
+	set ^CubeEventMonitor.BEElapsed = timeDisplay
 	
 	Quit $$$OK
 }

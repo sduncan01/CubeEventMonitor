@@ -1,4 +1,4 @@
-Class DSII.CubeManagerActionKPI Extends %DeepSee.KPI
+Class CubeEventMonitor.CubeManagerActionKPI Extends %DeepSee.KPI
 {
 
 /// This XData definition defines the KPI.
@@ -21,7 +21,7 @@ ClassMethod %OnDashboardAction(pAction As %String, pContext As %ZEN.proxyObject)
  Try {
      if (pAction = "GenerateCubeEventLog") {
 	     &js<alert("Generating the Cube Event Log.")>
-	     job ##class(DSII.CubeEventLogUtils).WriteLogFile()
+	     job ##class(CubeEventMonitor.CubeEventLogUtils).WriteLogFile()
      }
  }
  Catch(ex) {
@@ -33,9 +33,9 @@ ClassMethod %OnDashboardAction(pAction As %String, pContext As %ZEN.proxyObject)
 
 Method %OnLoadKPI() As %Status
 {
-	set dataUpdateTime = $get(^DSII.LastCubeEventsUpdate,"No update time found")
+	set dataUpdateTime = $get(^CubeEventMonitor.LastCEUpdate,"No update time found")
 	
-	set errorStatus = ##class(DSII.CubeEventLogUtils).WriteRecentErrors()
+	set errorStatus = ##class(CubeEventMonitor.CubeEventLogUtils).WriteRecentErrors()
 	if ($System.Status.GetErrorText(errorStatus) = "ERROR #5001: No recent errors to display") {
 		set errorStatusMsg = "No Cube Manager event errors in the last week"
 	} elseif (errorStatus '= 1) {

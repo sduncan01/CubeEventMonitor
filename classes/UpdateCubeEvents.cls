@@ -1,4 +1,4 @@
-Class DSII.UpdateCubeEvents Extends %SYS.Task.Definition
+Class CubeEventMonitor.UpdateCubeEvents Extends %SYS.Task.Definition
 {
 
 Parameter TaskName = "UpdateCubeEvents";
@@ -11,9 +11,9 @@ Parameter TaskName = "UpdateCubeEvents";
 Method OnTask() As %Status
 {
 	set timestamp = $zdt($h,3)
-	set updateCount = ##class(DSII.CubeEventCube).UpdateCubeEvents(timestamp)
+	set updateCount = ##class(CubeEventMonitor.CubeEventCube).UpdateCubeEvents(timestamp)
 	if (updateCount = -1) {
-		quit ^DSII.UpdateCubeEventsError(timestamp)
+		quit ^CubeEventMonitor.UpdateCEError(timestamp)
 	}
 	quit $$$OK
 }

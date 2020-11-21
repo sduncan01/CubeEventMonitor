@@ -1,4 +1,4 @@
-Class DSII.BuildErrors Extends %Persistent
+Class CubeEventMonitor.BuildErrors Extends %Persistent
 {
 
 Index IDK On (CubeName, SourceId) [ IdKey ];
@@ -31,8 +31,8 @@ Storage Default
 <DefaultData>BuildErrorsDefaultData</DefaultData>
 <ExtentSize>100000</ExtentSize>
 <IdLocation>^DeepSee.BuildErrors</IdLocation>
-<IndexLocation>^DSII.BuildErrorsI</IndexLocation>
-<StreamLocation>^DSII.BuildErrorsS</StreamLocation>
+<IndexLocation>^CubeEventMonitor.BuildErrorsI</IndexLocation>
+<StreamLocation>^CubeEventMonitor.BuildErrorsS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 
