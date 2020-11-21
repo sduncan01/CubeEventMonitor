@@ -1,4 +1,4 @@
-Class DSII.BuildErrorActionKPI Extends %DeepSee.KPI
+Class CubeEventMonitor.BuildErrorActionKPI Extends %DeepSee.KPI
 {
 
 /// This XData definition defines the KPI.
@@ -25,7 +25,7 @@ ClassMethod %OnDashboardAction(pAction As %String, pContext As %ZEN.proxyObject)
          set memberName = $p($p(filterSpec,"%FILTER [CubeName].[H1].[CubeName].&[",2),"]",1)
          set conf = 0
          &js<alert("Running %FixBuildErrors for the selected cube.\n\nThe output of %FixBuildErrors can be found at <install-dir>/mgr/<namespace-default-globals-database>/FixBuildErrors_<timestamp>.txt.\n\nTo view the most recent build error data, run the Update Build Error Data action from the lower-left widget.")>
-	     job ##class(DSII.BuildErrorsCube).FixBuildErrors(memberName,1)
+	     job ##class(CubeEventMonitor.BuildErrorsCube).FixBuildErrors(memberName,1)
      } elseif (pAction = "RebuildBuildErrorsCube") {
 	     set conf = 0
 	     &js<alert("Rebuilding the Build Error data.")>
@@ -41,9 +41,9 @@ ClassMethod %OnDashboardAction(pAction As %String, pContext As %ZEN.proxyObject)
 Method %OnLoadKPI() As %Status
 {
 	for n = 1:1:..%seriesCount {
-        Set tValue = $get(^DSII.BuildErrorsCubeRebuildTime,"No build time found")
+        Set tValue = $get(^CubeEventMonitor.BERebuildTime,"No build time found")
         Set ..%data(n,"LastBuildTime") = tValue
-        set tValue = $get(^DSII.BuildErrorsCubeElapsed,"No elapsed build time found")
+        set tValue = $get(^CubeEventMonitor.BEElapsed,"No elapsed build time found")
         set ..%data(n,"LastElapsedBuildTime") = tValue
     }
     quit $$$OK

@@ -1,5 +1,5 @@
 /// Logging class for Cube Monitor Alerts tasks - adapted from Peter Steiwer's Data Driven Alerts project, available under the MIT License at https://github.com/psteiwer/DataDrivenAlerts
-Class DSII.CubeMonitorAlertLog Extends %Persistent
+Class CubeEventMonitor.CubeMonitorAlertLog Extends %Persistent
 {
 
 Property Alert As %String;
@@ -14,12 +14,14 @@ Property TimeStamp As %TimeStamp [ InitialExpression = {$zdt($h,3)} ];
 
 Property Value As %Integer;
 
+Parameter DEFAULTGLOBAL = "^CubeEventMonitor.CEMAlertLog";
+
 /// Takes in info about an Alert Task and logs the information to the TaskLog
 ClassMethod LogTask(pAlert, pValue, pRes, pAlertStatus, pSQL) As %Status
 {
 	Set tSC = $$$OK
 	
-	Set tTaskLog = ##class(DSII.CubeMonitorAlertLog).%New()
+	Set tTaskLog = ##class(CubeEventMonitor.CubeMonitorAlertLog).%New()
 	Set tTaskLog.Alert = pAlert
 	Set tTaskLog.AlertTriggered = pRes
 	Set tTaskLog.SQL = $E(pSQL,1,32000) // Truncate if SQL string is too long
@@ -56,11 +58,11 @@ Storage Default
 <Value>Value</Value>
 </Value>
 </Data>
-<DataLocation>^DSII.CubeMonitorAlertLogD</DataLocation>
+<DataLocation>^CubeEventMonitor.CEMAlertLogD</DataLocation>
 <DefaultData>CubeMonitorAlertLogDefaultData</DefaultData>
-<IdLocation>^DSII.CubeMonitorAlertLogD</IdLocation>
-<IndexLocation>^DSII.CubeMonitorAlertLogI</IndexLocation>
-<StreamLocation>^DSII.CubeMonitorAlertLogS</StreamLocation>
+<IdLocation>^CubeEventMonitor.CEMAlertLogD</IdLocation>
+<IndexLocation>^CubeEventMonitor.CEMAlertLogI</IndexLocation>
+<StreamLocation>^CubeEventMonitor.CEMAlertLogS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 

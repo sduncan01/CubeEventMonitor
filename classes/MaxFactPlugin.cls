@@ -1,12 +1,12 @@
-/// DSII.MaxFactPlugin
+/// CubeEventMonitor.MaxFactPlugin
 /// 
 /// This DeepSee Plugin returns the value of a specified field from one source record.
 /// The returned value is from the source record with the largest value for the specified CompareField. 
 /// Examples: the following will return the ID of the source record with the highest TestScore
 /// %KPI("MaxFactPlugin","MaxValue",1,"OutputField","%ID","CompareField","TestScore","%CONTEXT")
 /// 
-/// This plugin class is modified from an earlier version written by Alessandro Marin.
-Class DSII.MaxFactPlugin Extends %DeepSee.KPIPlugIn
+/// This plugin class is modified from an earlier version written by Alessandro Marin (https://github.com/aless80).
+Class CubeEventMonitor.MaxFactPlugin Extends %DeepSee.KPIPlugIn
 {
 
 /// This plugin should be useable with all cubes
