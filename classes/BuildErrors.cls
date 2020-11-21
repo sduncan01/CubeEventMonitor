@@ -11,28 +11,23 @@ Property ErrorInfo As %String;
 
 Property ErrorText As %String [ Calculated, SqlComputeCode = {set {*}=##class(%SYSTEM.Status).GetErrorText({ErrorInfo})}, SqlComputed ];
 
+Parameter DEFAULTGLOBAL = "^CubeEventMonitor.BuildErr";
+
 Storage Default
 {
-<CounterLocation>^DeepSee.BuildErrors</CounterLocation>
 <Data name="BuildErrorsDefaultData">
-<Subscript>"1"</Subscript>
 <Value name="1">
 <Value>%%CLASSNAME</Value>
 </Value>
 <Value name="2">
-<Value>ErrorText</Value>
+<Value>ErrorInfo</Value>
 </Value>
 </Data>
-<Data name="DSTIMEDefaultData">
-<Attribute>ErrorInfo</Attribute>
-<Structure>node</Structure>
-</Data>
-<DataLocation>^DeepSee.BuildErrors</DataLocation>
+<DataLocation>^CubeEventMonitor.BuildErrD</DataLocation>
 <DefaultData>BuildErrorsDefaultData</DefaultData>
-<ExtentSize>100000</ExtentSize>
-<IdLocation>^DeepSee.BuildErrors</IdLocation>
-<IndexLocation>^CubeEventMonitor.BuildErrorsI</IndexLocation>
-<StreamLocation>^CubeEventMonitor.BuildErrorsS</StreamLocation>
+<IdLocation>^CubeEventMonitor.BuildErrD</IdLocation>
+<IndexLocation>^CubeEventMonitor.BuildErrI</IndexLocation>
+<StreamLocation>^CubeEventMonitor.BuildErrS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 

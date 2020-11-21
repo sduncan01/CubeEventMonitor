@@ -14,6 +14,8 @@ Property TimeStamp As %TimeStamp [ InitialExpression = {$zdt($h,3)} ];
 
 Property Value As %Integer;
 
+Parameter DEFAULTGLOBAL = "^CubeEventMonitor.CEMAlertLog";
+
 /// Takes in info about an Alert Task and logs the information to the TaskLog
 ClassMethod LogTask(pAlert, pValue, pRes, pAlertStatus, pSQL) As %Status
 {
@@ -56,11 +58,11 @@ Storage Default
 <Value>Value</Value>
 </Value>
 </Data>
-<DataLocation>^CubeEventMonitor.CubeMonitorAlertLogD</DataLocation>
+<DataLocation>^CubeEventMonitor.CEMAlertLogD</DataLocation>
 <DefaultData>CubeMonitorAlertLogDefaultData</DefaultData>
-<IdLocation>^CubeEventMonitor.CubeMonitorAlertLogD</IdLocation>
-<IndexLocation>^CubeEventMonitor.CubeMonitorAlertLogI</IndexLocation>
-<StreamLocation>^CubeEventMonitor.CubeMonitorAlertLogS</StreamLocation>
+<IdLocation>^CubeEventMonitor.CEMAlertLogD</IdLocation>
+<IndexLocation>^CubeEventMonitor.CEMAlertLogI</IndexLocation>
+<StreamLocation>^CubeEventMonitor.CEMAlertLogS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 
