@@ -160,17 +160,19 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 {
 	do $System.OBJ.Compile("CubeEventMonitor.BuildErrors,CubeEventMonitor.BuildErrorActionKPI,CubeEventMonitor.BuildErrorsCube,CubeEventMonitor.CubeManagerActionKPI,CubeEventMonitor.CubeEventCube,CubeEventMonitor.CubeEventLogUtils,CubeEventMonitor.RecentErrorsPortlet",compileFlags)
 	
-	// add resources to folders containing pivots and dashboards
-	set buildErrorsFolder = ##class(%DeepSee.UserLibrary.Utils).%FindFolder("BuildErrors",0,.sc)
-	if (sc '= 1) {
-		return sc
-	} elseif (buildErrorsFolder = "") {
-		return $$$ERROR($$$GeneralError,"Please import dashboards and pivots before running Setup!")
-	} else {
-		set buildErrorsFolder.resource = folderItemResource
-		set sc = buildErrorsFolder.%Save()
-		return:(sc '= 1) sc
-	}
+	if folderItemResource'="-1" {
+		// add resources to folders containing pivots and dashboards
+		set buildErrorsFolder = ##class(%DeepSee.UserLibrary.Utils).%FindFolder("BuildErrors",0,.sc)
+		if (sc '= 1) {
+			return sc
+		} elseif (buildErrorsFolder = "") {
+			return $$$ERROR($$$GeneralError,"Please import dashboards and pivots before running Setup!")
+		} else {
+			set buildErrorsFolder.resource = folderItemResource
+			set sc = buildErrorsFolder.%Save()
+			return:(sc '= 1) sc
+		}
+	
 	
 	set cubeEventsFolder = ##class(%DeepSee.UserLibrary.Utils).%FindFolder("CubeEvents",0,.sc)
 	if (sc '= 1) {
@@ -181,6 +183,7 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 		set cubeEventsFolder.resource = folderItemResource
 		set sc = cubeEventsFolder.%Save()
 		return:(sc '= 1) sc
+	}
 	}
 	
 	// add cubes to Cube Registry
