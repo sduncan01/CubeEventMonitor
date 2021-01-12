@@ -11,7 +11,9 @@ The Cube Event Monitor tool provides dashboards to allow you to monitor events (
 3. In Terminal, go to the namespace where you imported the classes and run
 	write ##class(CubeEventMonitor.CubeEventCube).Setup(<compileFlags>,<buildCubes>,<updateInterval>,<folderItemResource>,<alertRecipient>)
 
-The parameters you can set are as follows:
+4. If you specified an alertRecipient in the Setup() method, go to System Administration -> Configuration -> Additional Settings -> Task Manager Email in the Management Portal and ensure that the SMTP Server, Port, and Sender settings are configured
+
+In step 3, the parameters you can set are as follows:
 
 - compileFlags As %String = "": flags to be used when compiling the CubeEventMonitor package
 
@@ -29,7 +31,7 @@ Additional notes on setup:
 
 - By default, these cubes will be rebuilt nightly. This setting can be changed from the Cube Registry interface in the Management Portal after the Setup() method completes
 
-4. If you specified an alertRecipient in the Setup() method, go to System Administration -> Configuration -> Additional Settings -> Task Manager Email in the Management Portal and ensure that the SMTP Server, Port, and Sender settings are configured
+- If you specify %Development as the folderItemResource when running the Setup() method, it will also be used as the resource for the cubes. Otherwise, %DeepSee_Admin will be used as the cube resource. You can change this later in the Architect. When installing this application via ZPM, %Development will be used as the resource, to allow the application to be used with the predefined %Developer role 
 
 ## Security:
 

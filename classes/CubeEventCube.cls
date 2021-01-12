@@ -272,6 +272,21 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 	} else {
 		write !,"Skipping cube builds",!
 	}
+
+	// enable users to specify %Development resource for cubes as well as folder items (rather than %DeepSee_Admin, for demo/development purposes)
+	if (folderItemResource = "%Development") {
+		set buildErrorsModel = ##class(CubeEventMonitor.BuildErrorsCube).%GetModel()
+		set buildErrorsModel.resource = folderItemResource
+		set sc = ##class(%DeepSee.Utils).%SaveCubeDefinition("CubeEventMonitor.BuildErrorsCube",,buildErrorsModel.Description,buildErrorsModel)
+		return:(sc '= 1) sc
+
+		set cubeEventModel = ##class(CubeEventMonitor.CubeEventCube).%GetModel()
+		set cubeEventModel.resource = folderItemResource
+		set sc = ##class(%DeepSee.Utils).%SaveCubeDefinition("CubeEventMonitor.CubeEventCube",,cubeEventModel.Description,cubeEventModel)
+		return:(sc '= 1) sc		
+	
+		do $System.OBJ.Compile("CubeEventMonitor.BuildErrorsCube,CubeEventMonitor.CubeEventCube",compileFlags)
+	}
 	
 	// set up a runtime variable for use in the CubeManagerDashboard
 	set ^DeepSee.User.Settings("FirstCube","value") = "##class(CubeEventMonitor.CubeEventLogUtils).GetDefaultCube()"
