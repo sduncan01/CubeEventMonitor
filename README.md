@@ -9,7 +9,8 @@ The Cube Event Monitor tool provides dashboards to allow you to monitor events (
 2. Compile CubeEventMonitor.CubeEventCube.cls
 
 3. In Terminal, go to the namespace where you imported the classes and run
-	write ##class(CubeEventMonitor.CubeEventCube).Setup(<compileFlags>,<buildCubes>,<updateInterval>,<folderItemResource>,<alertRecipient>)
+	
+	write ##class(CubeEventMonitor.CubeEventCube).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>,\<alertRecipient>)
 
 4. If you specified an alertRecipient in the Setup() method, go to System Administration -> Configuration -> Additional Settings -> Task Manager Email in the Management Portal and ensure that the SMTP Server, Port, and Sender settings are configured
 
