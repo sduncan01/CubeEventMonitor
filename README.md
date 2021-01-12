@@ -32,11 +32,11 @@ Additional notes on setup:
 
 - By default, these cubes will be rebuilt nightly. This setting can be changed from the Cube Registry interface in the Management Portal after the Setup() method completes
 
-- If you specify %Development as the folderItemResource when running the Setup() method, it will also be used as the resource for the cubes. Otherwise, %DeepSee_Admin will be used as the cube resource. You can change this later in the Architect. When installing this application via ZPM, %Development will be used as the resource, to allow the application to be used with the predefined %Developer role 
+- If you specify %Development as the folderItemResource when running the Setup() method, it will also be used as the resource for the cubes. Otherwise, %DeepSee_Admin will be used as the cube resource. When installing this application via ZPM, %Development will be used as the resource, to allow the application to be used with the predefined %Developer role 
 
 ## Security:
 
-The CubeEventCube and BuildErrors cube are both secured with the %DeepSee_Admin resource. If you prefer to use a different resource, you can edit this for each cube from the Architect after running CubeEventMonitor.CubeEventCube:Setup(). If you edit a cube's resource, you should recompile it, but it is not necessary to rebuild it.
+The CubeEventCube and BuildErrors cube are both secured with the %DeepSee_Admin resource (or with the %Development resource if you specified it as the folderItemResource - see note above). If you prefer to use a different resource, you can edit this for each cube from the Architect after running CubeEventMonitor.CubeEventCube:Setup(). If you edit a cube's resource, you should recompile it, but it is not necessary to rebuild it.
 
 The CubeEvents and BuildErrors folders are secured with the resource you specified when running CubeEventMonitor.CubeEventCube:Setup() - see the Setup section above. The default resource for these folders is %DeepSee_Admin. A resource applied to a folder applies to all pivots and dashboards in that folder.
 
