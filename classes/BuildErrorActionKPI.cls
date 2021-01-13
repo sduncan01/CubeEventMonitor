@@ -25,7 +25,7 @@ ClassMethod %OnDashboardAction(pAction As %String, pContext As %ZEN.proxyObject)
          set memberName = $p($p(filterSpec,"%FILTER [CubeName].[H1].[CubeName].&[",2),"]",1)
          set conf = 0
          &js<alert("Running %FixBuildErrors for the selected cube.\n\nThe output of %FixBuildErrors can be found at <install-dir>/mgr/<namespace-default-globals-database>/FixBuildErrors_<timestamp>.txt.\n\nTo view the most recent build error data, run the Update Build Error Data action from the lower-left widget.")>
-	     job ##class(CubeEventMonitor.BuildErrorsCube).FixBuildErrors(memberName,1)
+	     job ##class(CubeEventMonitor.Utils).FixBuildErrors(memberName,1)
      } elseif (pAction = "RebuildBuildErrorsCube") {
 	     set conf = 0
 	     &js<alert("Rebuilding the Build Error data.")>

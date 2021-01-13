@@ -6,7 +6,7 @@ The Cube Event Monitor tool provides dashboards to allow you to monitor events (
 
 Import all classes and DFI files into the namespace where you want to use the Cube Event Monitor. Compile (at least) CubeEventMonitor.CubeEventCube.cls, then open the Terminal and run
 
-write ##class(CubeEventMonitor.CubeEventCube).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>)
+write ##class(CubeEventMonitor.Utils).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>)
 
 in this namespace, where \<compileFlags> is a string of any compile flags you want to use, \<buildCubes> is either "true" (the default) or "false", \<updateInterval> is the frequency in minutes with which you want to update data in the CubeEvents cube, and \<folderItemResource> is the name of an existing resource that you want applied to the folder items (pivots and dashboards) that you have imported as part of the Cube Event Monitor. 
 
@@ -16,9 +16,9 @@ If \<buildCubes> is "true", the CubeEventCube and BuildErrors cube will both be 
 
 ## Security
 
-The CubeEventCube and BuildErrors cube are both secured with the %DeepSee_Admin resource. If you prefer to use a different resource, you can edit this for each cube from the Architect after running CubeEventMonitor.CubeEventCube:Setup(). If you edit a cube's resource, you should recompile it, but it is not necessary to rebuild it.
+The CubeEventCube and BuildErrors cube are both secured with the %DeepSee_Admin resource. If you prefer to use a different resource, you can edit this for each cube from the Architect after running CubeEventMonitor.Utils:Setup(). If you edit a cube's resource, you should recompile it, but it is not necessary to rebuild it.
 
-The CubeEvents and BuildErrors folders are secured with the resource you specified when running CubeEventMonitor.CubeEventCube:Setup() - see the Setup section above. The default resource for these folders is %DeepSee_Admin. A resource applied to a folder applies to all pivots and dashboards in that folder.
+The CubeEvents and BuildErrors folders are secured with the resource you specified when running CubeEventMonitor.Utils:Setup() - see the Setup section above. The default resource for these folders is %DeepSee_Admin. A resource applied to a folder applies to all pivots and dashboards in that folder.
 
 ## Dashboards
 

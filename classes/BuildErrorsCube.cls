@@ -68,28 +68,6 @@ ClassMethod %OnBuildCube() As %Status
 	quit sc
 }
 
-/// wrapper for %DeepSee.Utils:%FixBuildErrors(), called by FixBuildErrors custom action in CubeEventMonitor.BuildErrorActionKPI:%OnDashboardAction()
-ClassMethod FixBuildErrors(cubeName As %String, verbose As %Boolean)
-{
-	set startTime = $zdt($h,3)
-	set filenameTime = $translate(startTime,":","-")
-	set filenameTime = $translate(filenameTime," ","_")
-	
-	set dir=##class(%SYSTEM.Process).CurrentDirectory()
-    set file = dir_"FixBuildErrors_"_filenameTime_".txt"
-    open file:("NRW"):1
-    use file
-    
-    write "Starting %FixBuildErrors() at ",startTime," for cube ",$$$UPPER(cubeName),!
-    
-    set sc = ##class(%DeepSee.Utils).%FixBuildErrors(cubeName,verbose)
-    write:(sc '= 1) "Error: ",sc,!
-    write:(sc = 1) "%FixBuildErrors() finished at ",$zdt($h,3),!
-    
-    close file
-    quit
-}
-
 /// Notification that this cube has completed its build.<br/>
 /// The status of the overall build is contained in <var>pBuildStatus</var>. If the build is otherwise successful, 
 /// the value of <var>pBuildStatus</var> can be changed within the callback to become the new status returned by %BuildCube.

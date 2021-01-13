@@ -4,7 +4,7 @@ Class CubeEventMonitor.RecentErrorsPortlet Extends %DeepSee.Component.Portlet.ab
 /// Static HTML display method: draw the BODY of this component as HTML.
 Method %DrawHTML()
 {
-	set sc = ##class(CubeEventMonitor.CubeEventLogUtils).WriteRecentErrors()
+	set sc = ##class(CubeEventMonitor.Utils).WriteRecentErrors()
 	
 	if ($System.Status.GetErrorText(sc) = "ERROR #5001: No recent errors to display") {
 		&html<<div class="portletDiv">#("There are no Cube Manager events with errors in the last week.")#</div>>

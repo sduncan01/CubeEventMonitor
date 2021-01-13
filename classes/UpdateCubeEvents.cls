@@ -11,7 +11,7 @@ Parameter TaskName = "UpdateCubeEvents";
 Method OnTask() As %Status
 {
 	set timestamp = $zdt($h,3)
-	set updateCount = ##class(CubeEventMonitor.CubeEventCube).UpdateCubeEvents(timestamp)
+	set updateCount = ##class(CubeEventMonitor.Utils).UpdateCubeEvents(timestamp)
 	if (updateCount = -1) {
 		quit ^CubeEventMonitor.UpdateCEError(timestamp)
 	}

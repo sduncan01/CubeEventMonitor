@@ -10,7 +10,7 @@ The Cube Event Monitor tool provides dashboards to allow you to monitor events (
 
 3. In Terminal, go to the namespace where you imported the classes and run
 	
-	write ##class(CubeEventMonitor.CubeEventCube).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>,\<alertRecipient>)
+	write ##class(CubeEventMonitor.Utils).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>,\<alertRecipient>)
 
 4. If you specified an alertRecipient in the Setup() method, go to System Administration -> Configuration -> Additional Settings -> Task Manager Email in the Management Portal and ensure that the SMTP Server, Port, and Sender settings are configured
 
@@ -36,9 +36,9 @@ Additional notes on setup:
 
 ## Security:
 
-The CubeEventCube and BuildErrors cube are both secured with the %DeepSee_Admin resource (or with the %Development resource if you specified it as the folderItemResource - see note above). If you prefer to use a different resource, you can edit this for each cube from the Architect after running CubeEventMonitor.CubeEventCube:Setup(). If you edit a cube's resource, you should recompile it, but it is not necessary to rebuild it.
+The CubeEventCube and BuildErrors cube are both secured with the %DeepSee_Admin resource (or with the %Development resource if you specified it as the folderItemResource - see note above). If you prefer to use a different resource, you can edit this for each cube from the Architect after running CubeEventMonitor.Utils:Setup(). If you edit a cube's resource, you should recompile it, but it is not necessary to rebuild it.
 
-The CubeEvents and BuildErrors folders are secured with the resource you specified when running CubeEventMonitor.CubeEventCube:Setup() - see the Setup section above. The default resource for these folders is %DeepSee_Admin. A resource applied to a folder applies to all pivots and dashboards in that folder.
+The CubeEvents and BuildErrors folders are secured with the resource you specified when running CubeEventMonitor.Utils:Setup() - see the Setup section above. The default resource for these folders is %DeepSee_Admin. A resource applied to a folder applies to all pivots and dashboards in that folder.
 
 ## Dashboards:
 
