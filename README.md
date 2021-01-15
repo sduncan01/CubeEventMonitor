@@ -29,9 +29,9 @@ which performs the default setup with %Development as the security resource for 
 2. Compile CubeEventMonitor.CubeEventCube.cls
 
 3. In Terminal, go to the namespace where you imported the classes and run
-	
-	write ##class(CubeEventMonitor.Utils).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>,\<alertRecipient>)
-
+```
+write ##class(CubeEventMonitor.Utils).Setup(<compileFlags>,<buildCubes>,<updateInterval>,<folderItemResource>,<alertRecipient>)
+```
 4. If you specified an alertRecipient in the Setup() method, go to System Administration -> Configuration -> Additional Settings -> Task Manager Email in the Management Portal and ensure that the SMTP Server, Port, and Sender settings are configured
 
 In step 3, the parameters you can set are as follows:
