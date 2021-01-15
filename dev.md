@@ -33,4 +33,7 @@ do $System.OBJ.Export("dc*.GBL","/irisdev/app/src/gbl/globals.xml",,.errors)
 zw errors
 ```
 
-write ##class(CubeEventMonitor.CubeEventCube).Setup(,,,"%DB_IRISAPP")
+## run setup using %Development resource
+```
+write ##class(CubeEventMonitor.CubeEventCube).Setup(,,,"%Development")
+```
