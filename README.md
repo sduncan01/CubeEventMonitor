@@ -5,24 +5,25 @@ The Cube Event Monitor tool provides dashboards to allow you to monitor events (
 ## Setup:
 
 ### Docker setup:
-clone the repository.
-run docker-compose:
+Clone the repository.
+Run docker-compose:
 ```
 docker-compose up -d
 ```
-Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.zen or DSW http://localhost:32794/dsw/index.html#/IRISAPP
+Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.zen or (for DeepSeeWeb) http://localhost:32794/dsw/index.html#/IRISAPP
 
 ### ZPM setup:
 USER>zpm "install cube-event-monitor"
 
-Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.zen or DSW http://localhost:32794/dsw/index.html#/IRISAPP
+Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.zen or (for DeepSeeWeb) http://localhost:32794/dsw/index.html#/IRISAPP
 
-both setups do the call:
+Both of the above setup methods call
 ```
-write ##class(CubeEventMonitor.CubeEventCube).Setup(,,,"-1")
+write ##class(CubeEventMonitor.CubeEventCube).Setup(,,,"%Development")
 ```
-Which performs the default setup without security resources for dashboards.
+which performs the default setup with %Development as the security resource for cubes, pivot tables, and dashboards.
 
+### Manual setup:
 1. Import all classes and DFI files into the namespace where you want to use the Cube Event Monitor
 
 2. Compile CubeEventMonitor.CubeEventCube.cls
