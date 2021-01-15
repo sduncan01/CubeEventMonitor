@@ -4,14 +4,34 @@ The Cube Event Monitor tool provides dashboards to allow you to monitor events (
 
 ## Setup:
 
+### Docker setup:
+Clone the repository.
+Run docker-compose:
+```
+docker-compose up -d
+```
+Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.zen or (for DeepSeeWeb) http://localhost:32794/dsw/index.html#/IRISAPP
+
+### ZPM setup:
+USER>zpm "install cube-event-monitor"
+
+Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.zen or (for DeepSeeWeb) http://localhost:32794/dsw/index.html#/IRISAPP
+
+Both of the above setup methods call
+```
+write ##class(CubeEventMonitor.CubeEventCube).Setup(,,,"%Development")
+```
+which performs the default setup with %Development as the security resource for cubes, pivot tables, and dashboards.
+
+### Manual setup:
 1. Import all classes and DFI files into the namespace where you want to use the Cube Event Monitor
 
 2. Compile CubeEventMonitor.CubeEventCube.cls
 
 3. In Terminal, go to the namespace where you imported the classes and run
-	
-	write ##class(CubeEventMonitor.Utils).Setup(\<compileFlags>,\<buildCubes>,\<updateInterval>,\<folderItemResource>,\<alertRecipient>)
-
+```
+write ##class(CubeEventMonitor.Utils).Setup(<compileFlags>,<buildCubes>,<updateInterval>,<folderItemResource>,<alertRecipient>)
+```
 4. If you specified an alertRecipient in the Setup() method, go to System Administration -> Configuration -> Additional Settings -> Task Manager Email in the Management Portal and ensure that the SMTP Server, Port, and Sender settings are configured
 
 In step 3, the parameters you can set are as follows:

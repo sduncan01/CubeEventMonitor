@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache">
+<Global>
+<Node><Sub>^DeepSee.TermList</Sub>
+<Node><Sub>SUCCESSFAILURECOLORS</Sub>
+<Node><Sub>data</Sub>
+<Node><Sub>Failure</Sub>
+<Node><Sub>VALUE</Sub>
+<Data>Red</Data>
+</Node>
+</Node>
+<Node><Sub>Success</Sub>
+<Node><Sub>VALUE</Sub>
+<Data>Green</Data>
+</Node>
+</Node>
+</Node>
+<Node><Sub>modDate</Sub>
+<Data>2020-12-03 22:19:38</Data>
+</Node>
+<Node><Sub>name</Sub>
+<Data>SuccessFailureColors</Data>
+</Node>
+</Node>
+</Node>
+</Global>
+</Export>
