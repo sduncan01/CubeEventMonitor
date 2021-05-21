@@ -3,7 +3,8 @@
   <Document name="cube-event-monitor.ZPM">
     <Module>
       <Name>cube-event-monitor</Name>
-      <Version>1.0.0</Version>
+      <Version>1.0.1</Version>
+      <Description>Tool for monitoring BI cube events and build errors</Description>
       <Dependencies>
         <ModuleReference>
           <Name>dsw</Name>
@@ -16,7 +17,7 @@
       <Resource Name="DeepSee.TermList.GBL" />
       <Resource Name="*.DFI" />
       <Invokes>
-        <Invoke Class="CubeEventMonitor.CubeEventCube" Method="Setup">
+        <Invoke Class="CubeEventMonitor.Utils" Method="Setup">
           <Arg></Arg>
           <Arg></Arg>
           <Arg></Arg>
