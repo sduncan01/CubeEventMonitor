@@ -3,7 +3,7 @@
   <Document name="cube-event-monitor.ZPM">
     <Module>
       <Name>cube-event-monitor</Name>
-      <Version>1.0.1</Version>
+      <Version>0.1.7</Version>
       <Description>Tool for monitoring BI cube events and build errors</Description>
       <Dependencies>
         <ModuleReference>

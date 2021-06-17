@@ -19,14 +19,14 @@ Open Dashboards on http://localhost:32794/csp/irisapp/_DeepSee.UserPortal.Home.z
 
 Both of the above setup methods call
 ```
-write ##class(CubeEventMonitor.CubeEventCube).Setup(,,,"%Development")
+write ##class(CubeEventMonitor.Utils).Setup(,,,"%Development")
 ```
 which performs the default setup with %Development as the security resource for cubes, pivot tables, and dashboards.
 
 ### Manual setup:
 1. Import all classes and DFI files into the namespace where you want to use the Cube Event Monitor
 
-2. Compile CubeEventMonitor.CubeEventCube.cls
+2. Compile CubeEventMonitor.Utils.cls
 
 3. In Terminal, go to the namespace where you imported the classes and run
 ```

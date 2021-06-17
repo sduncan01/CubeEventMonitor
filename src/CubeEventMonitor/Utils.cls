@@ -10,7 +10,7 @@ Class CubeEventMonitor.Utils Extends %RegisteredObject
 /// from the Cube Registry interface in the Management Portal after running this method.
 ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true", updateInterval As %Integer = 60, folderItemResource As %String = "%DeepSee_Admin", alertRecipient As %String = "") As %Status
 {
-	do $System.OBJ.Compile("CubeEventMonitor.BuildErrors,CubeEventMonitor.BuildErrorActionKPI,CubeEventMonitor.BuildErrorsCube,CubeEventMonitor.CubeManagerActionKPI,CubeEventMonitor.CubeEventCube,CubeEventMonitor.CubeEventLogUtils,CubeEventMonitor.RecentErrorsPortlet",compileFlags)
+	do $System.OBJ.Compile("CubeEventMonitor.BuildErrors,CubeEventMonitor.BuildErrorActionKPI,CubeEventMonitor.BuildErrorsCube,CubeEventMonitor.CubeManagerActionKPI,CubeEventMonitor.CubeEventCube,CubeEventMonitor.Utils,CubeEventMonitor.RecentErrorsPortlet",compileFlags)
 	
 	// add resources to folders containing pivots and dashboards
 	set buildErrorsFolder = ##class(%DeepSee.UserLibrary.Utils).%FindFolder("BuildErrors",0,.sc)
