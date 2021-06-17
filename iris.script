@@ -3,13 +3,12 @@ do $SYSTEM.OBJ.Load("/opt/irisapp/Installer.cls", "ck")
 set sc = ##class(App.Installer).setup() 
 
 zn "IRISAPP"
-;do $System.OBJ.LoadDir("/opt/irisapp/src","ck",,1)
+do $System.OBJ.LoadDir("/opt/irisapp/src/hf","ck",,1)
 zpm "install dsw"
 ;zpm "install isc-dev" 
 do ##class(dev.code).workdir("/irisdev/app/src")
 do EnableDeepSee^%SYS.cspServer("/csp/irisapp/")
 ;do ##class(%DeepSee.Utils).%BuildCube("CovidCube")
-
 
 zpm "load /opt/irisapp/ -v"
 
