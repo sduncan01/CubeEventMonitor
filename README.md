@@ -44,7 +44,7 @@ In step 3, the parameters you can set are as follows:
 
 - folderItemResource As %String = "%DeepSee_Admin": resource to be applied to the pivots and dashboards imported as part of this tool. If you specify a custom resource, please ensure that it exists and is granted to the appropriate roles
 
-- alertRecipient As %String = "": email address (of the form "recipient@example.com") to which this tool will send alerts. If an email address is specified, a task will be set up to send an alert at 6 am every day if there have been cube events with errors since the task was last run, or if any build errors have ever been logged for any cube in the namespace and not yet fixed
+- alertRecipient As %String = "": email address (of the form "recipient@example.com") to which this tool will send alerts. If an email address is specified, a task will be set up to send an alert at 6 am every day if the cube registry cannot be validated, if there have been cube events with errors since the task was last run, or if any build errors have ever been logged for any cube in the namespace and not yet fixed
 
 Additional notes on setup:
 
