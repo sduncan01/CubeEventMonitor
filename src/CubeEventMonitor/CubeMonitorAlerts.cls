@@ -9,17 +9,15 @@ Method OnTask() As %Status
 {
 	Set sc=$$$OK
 	Try {
-		set startTime = $zdt($h,3)			
+		set alertList = $lb("CubeEventErrors","BuildErrors","InvalidRegistry")
+		
+		for i = 1:1:$listlength(alertList) {
+			set startTime = $zdt($h,3)			
 
-		// run the CubeEventErrors alert
-		set alertName = "CubeEventErrors"		
-		set sc = ..RunAlert(alertName,startTime)
-		return:(sc '= 1) sc
-	
-		// run the BuildErrors alert
-		set alertName = "BuildErrors"
-		set sc = ..RunAlert(alertName,startTime)
-		return:(sc '= 1) sc
+			set alertName = $listget(alertList,i)
+			set sc = ..RunAlert(alertName,startTime)
+			return:(sc '= 1) sc
+		}
 	} Catch ex {
 		Set sc = ex.AsStatus()
 	} 
@@ -33,6 +31,27 @@ ClassMethod RunAlert(alertName As %String, startTime As %DateTime) As %Status
 	// search for errors since the last alert, or in the last week if no LastAlertTime is logged
 	set lastAlertTime = $g(^CubeEventMonitor.LastAlertTime(alertName),$zdt(((+$h)-7)_",0",3))
 	
+	if ((alertName = "CubeEventErrors") || (alertName = "BuildErrors")) {
+		set alertCount = ..CheckSQLAlert(alertName, lastAlertTime) 
+	} elseif (alertName = "InvalidRegistry") {
+		set alertCount = ..CheckInvalidRegistryAlert()
+	} else {
+		throw ##class(%Exception.General).%New("Invalid alert name "_alertName)
+	}
+			
+	if (alertCount > 0) {
+		set sc = ..SendAlert(alertName,alertCount)
+	}
+		
+	set sc = ##class(CubeEventMonitor.CubeMonitorAlertLog).LogTask(alertName,alertCount,(alertCount > 0),sc,$g(alertQuery,"No SQL query"))
+	set ^CubeEventMonitor.LastAlertTime(alertName) = startTime
+
+	quit sc
+}
+
+/// Run a SQL query to get a count of relevant items for one alert
+ClassMethod CheckSQLAlert(alertName As %String, lastAlertTime As %DateTime) As %Integer
+{
 	set alertQuery = $case(alertName,
 							"CubeEventErrors":"SELECT COUNT(*) FROM %DeepSee_CubeManager.CubeEvent WHERE EventStatus %STARTSWITH '0' AND (FinishTime >= '"_lastAlertTime_"' OR (FinishTime IS NULL AND StartTime >= '"_lastAlertTime_"'))",
 							"BuildErrors":"SELECT COUNT(*) FROM (SELECT TOP 1 ID FROM CubeEventMonitor.BuildErrors)", // just see if there are any build errors, we can count them more efficiently later
@@ -44,7 +63,7 @@ ClassMethod RunAlert(alertName As %String, startTime As %DateTime) As %Status
 	set statement = ##class(%SQL.Statement).%New()
 	set sc = statement.%Prepare(alertQuery)
 	if (sc'=1) {
-		return sc
+		throw ##class(%Exception.General).%New("Error preparing SQL alert query: "_sc)
 	}
 	set rs = statement.%Execute()
 		
@@ -53,15 +72,30 @@ ClassMethod RunAlert(alertName As %String, startTime As %DateTime) As %Status
 	} else {
 		throw ##class(%Exception.General).%New("No alert query result set")
 	}
-		
-	if (alertCount > 0) {
-		set sc = ..SendAlert(alertName,alertCount)
-	}
-		
-	set sc = ##class(CubeEventMonitor.CubeMonitorAlertLog).LogTask(alertName,alertCount,(alertCount > 0),sc,alertQuery)
-	set ^CubeEventMonitor.LastAlertTime(alertName) = startTime
+	
+	return alertCount
+}
 
-	quit sc
+/// Check for an invalid active cube registry. 
+/// A return value of 0 indicates that no alert should be sent because the registry is valid. A nonzero return value indicates that 
+ClassMethod CheckInvalidRegistryAlert() As %Integer
+{
+	set activeReg = ##class(%DeepSee.CubeManager.Utils).GetActiveRegistry()  
+	if (activeReg = "") {
+		return 1 // there should be an active registry at this point; if not, send an alert
+	}
+	
+	set regMap = ##class(%DeepSee.CubeManager.Utils).BuildRegistryMap(.sc,activeReg)
+	if (sc '= 1) {
+		return 2 // registry map failed to build, send an alert
+	}
+	
+	set sc = regMap.Validate()
+	if (sc '= 1) {
+		return 3 // registry map failed validation, send an alert
+	} else {
+		return 0 // registry is valid, no alert needed
+	}
 }
 
 /// The SendAlert will be triggered when the alert condition has been met. This method handles sending the email alert
@@ -94,9 +128,18 @@ ClassMethod SendAlert(alertName As %String, pValue As %Numeric) As %Status
 					do tMail.TextData.WriteLine("<br/>"_cubeName_": "_currErrCount_" errors")
 					set cubeName = $order(^DeepSee.BuildErrors(cubeName))
 				}
-				do tMail.TextData.WriteLine("<br/><br/>TOTAL ERROR COUNT: "_totalErrCount)
-				
+				do tMail.TextData.WriteLine("<br/><br/>TOTAL ERROR COUNT: "_totalErrCount)			
+			} elseif (alertName = "InvalidRegistry") {
+				set tMail.Subject = "Alert: Cube registry failed validation!"
+				do tMail.TextData.WriteLine("There is no valid cube registry in this namespace for the following reason:</br>")
+				set reason = $case(pValue,
+									1:"There is no active cube registry in this namespace.",
+									2:"The registry map could not be built. Check the Analytics logs for details.",
+									3:"The registry map could not be validated. Check the Analytics logs for details.",
+									:"Unknown reason, please report a bug at https://github.com/sduncan01/CubeEventMonitor")
+				do tMail.TextData.WriteLine(reason_"</br></br>No scheduled cube build or synchronize events will run in this namespace until this problem is resolved.")
 			}
+			
 			do tMail.TextData.WriteLine("<br/><br/>Server: "_$p($system,":",1)_"<br/>Instance: "_$p($system,":",2)_"<br/>Namespace: "_$namespace)
 
 	 		Set tSC=tSMTP.Send(tMail)
