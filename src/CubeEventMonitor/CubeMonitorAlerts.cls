@@ -40,10 +40,10 @@ ClassMethod RunAlert(alertName As %String, startTime As %DateTime) As %Status
 	}
 			
 	if (alertCount > 0) {
-		set sc = ..SendAlert(alertName,alertCount)
+		set sendAlertStatus = ..SendAlert(alertName,alertCount)
 	}
 		
-	set sc = ##class(CubeEventMonitor.CubeMonitorAlertLog).LogTask(alertName,alertCount,(alertCount > 0),sc,$g(alertQuery,"No SQL query"))
+	set sc = ##class(CubeEventMonitor.CubeMonitorAlertLog).LogTask(alertName,alertCount,(alertCount > 0),$g(sendAlertStatus,""),$g(alertQuery,"No SQL query"))
 	set ^CubeEventMonitor.LastAlertTime(alertName) = startTime
 
 	quit sc
