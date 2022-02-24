@@ -378,11 +378,11 @@ ClassMethod WriteLogFile() As %Status
 		quit $$$OK
 }
 
-ClassMethod WriteRecentErrors() As %Status
+ClassMethod WriteRecentErrors(file As %String = "RecentCubeEventErrors") As %Status
 {
 	set lastweek = $zdt(((+$h)-7)_",0",3)
 	set fieldList = "ID, CubeKey AS ""CubeName"", StartTime, FinishTime, CubeEvent, CubeEventMonitor.Utils_getEventStatusText(EventStatus) AS ""CubeEventStatus"", CubeSize AS ""FactCount"", ErrorCount, TotalTime, FactsUpdated, MissingRefs, ExprTime, MgmtGroup AS ""RegistryGroup"", AsynchUpdate, AgentCount"
-	set cubeQuery = "SELECT "_fieldList_" FROM %DeepSee_CubeManager.CubeEvent WHERE EventStatus %STARTSWITH '0' AND FinishTime >= '"_lastweek_"' ORDER BY FinishTime DESC"
+	set cubeQuery = "SELECT "_fieldList_" FROM %DeepSee_CubeManager.CubeEvent WHERE EventStatus %STARTSWITH '0' AND (FinishTime >= '"_lastweek_"' OR (FinishTime IS NULL AND StartTime >= '"_lastweek_"')) ORDER BY FinishTime DESC"
 	set statement = ##class(%SQL.Statement).%New()
 	set sc = statement.%Prepare(cubeQuery)
 	if (sc'=1) {
@@ -395,7 +395,7 @@ ClassMethod WriteRecentErrors() As %Status
 	} elseif (rs.%SQLCODE '= 0) {
 		return $System.Status.Error(5521,rs.%SQLCODE,rs.%Message) 
 	} else { 
-		do rs.%DisplayFormatted("HTML")
+		do rs.%DisplayFormatted("HTML",file)
 	}
 	
 	quit $$$OK
