@@ -78,6 +78,7 @@ ClassMethod CheckSQLAlert(alertName As %String, lastAlertTime As %DateTime) As %
 
 /// Check for an invalid active cube registry. 
 /// A return value of 0 indicates that no alert should be sent because the registry is valid. A nonzero return value indicates that 
+/// an alert should be sent because the registry is missing or inactive, failed to build, or failed validation.
 ClassMethod CheckInvalidRegistryAlert() As %Integer
 {
 	set activeReg = ##class(%DeepSee.CubeManager.Utils).GetActiveRegistry()  
