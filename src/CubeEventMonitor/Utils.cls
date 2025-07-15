@@ -129,12 +129,12 @@ ClassMethod Setup(compileFlags As %String = "", buildCubes As %Boolean = "true",
 	if (folderItemResource = "%Development") {
 		set buildErrorsModel = ##class(CubeEventMonitor.BuildErrorsCube).%GetModel()
 		set buildErrorsModel.resource = folderItemResource
-		set sc = ##class(%DeepSee.Utils).%SaveCubeDefinition("CubeEventMonitor.BuildErrorsCube",,buildErrorsModel.Description,buildErrorsModel)
+		set sc = ##class(%DeepSee.Utils).%SaveCubeDefinition("CubeEventMonitor.BuildErrorsCube",,buildErrorsModel.description,buildErrorsModel)
 		return:(sc '= 1) sc
 
 		set cubeEventModel = ##class(CubeEventMonitor.CubeEventCube).%GetModel()
 		set cubeEventModel.resource = folderItemResource
-		set sc = ##class(%DeepSee.Utils).%SaveCubeDefinition("CubeEventMonitor.CubeEventCube",,cubeEventModel.Description,cubeEventModel)
+		set sc = ##class(%DeepSee.Utils).%SaveCubeDefinition("CubeEventMonitor.CubeEventCube",,cubeEventModel.description,cubeEventModel)
 		return:(sc '= 1) sc		
 	
 		do $System.OBJ.Compile("CubeEventMonitor.BuildErrorsCube,CubeEventMonitor.CubeEventCube",compileFlags)
