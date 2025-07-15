@@ -3,14 +3,8 @@
   <Document name="cube-event-monitor.ZPM">
     <Module>
       <Name>cube-event-monitor</Name>
-      <Version>1.0.2</Version>
+      <Version>1.0.3</Version>
       <Description>Tool for monitoring BI cube events and build errors</Description>
-      <Dependencies>
-        <ModuleReference>
-          <Name>dsw</Name>
-          <Version>3.*</Version>
-        </ModuleReference>
-      </Dependencies>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="CubeEventMonitor.PKG"/>
